@@ -91,22 +91,22 @@ app.get("/recordatorio", (req, res) => {
   }
 });
 
-app.delete("/recordatorio", (req, res) => {
+app.delete("/recordatorio", async (req, res) => {
   try {
     const legajo = req.body.legajo;
     const id = req.body.id;
-    recordatorios
-      .destroy({
-        where: {
-          legajo,
-          id,
-        },
-      })
-      .then((r) => res.status(200).send(r))
-      .catch((error) => res.status(400).send(error));
+    await recordatorios.destroy({
+      where: {
+        legajo,
+        id,
+      },
+    });
+    res.status(200).send({
+      message: "Ok!",
+    });
   } catch (err) {
     return res.status(500).send({
-      message: "Fallo la recuperacion",
+      message: "Fallo el borrado de datos",
       inner: JSON.stringify(err),
     });
   }
