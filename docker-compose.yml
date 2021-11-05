@@ -1,0 +1,71 @@
+version: "3.3"
+services:
+  recordatorios-mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: "DB_NAME"
+      MYSQL_USER: "DB_USER"
+      MYSQL_PASSWORD: "DB_PASS"
+    ports:
+      - "6603:3306"
+    expose:
+      # Opens port 3306 on the container
+      - "3306"
+    volumes:
+      - /root/recordatorio-db-volume:/var/lib/mysql
+
+  recordatorio-api:
+    image: recordatorio-service:latest
+    restart: always
+    expose:
+      - "1337"
+    ports:
+      - "1337:1337"
+    volumes:
+      - /usr/src/app/node_modules
+    environment:
+      DB_NAME: "DB_NAME"
+      DB_USER: "DB_USER"
+      DB_PASS: "DB_PASS"
+      DB_HOST: recordatorios-mysql
+      DB_PORT: 3306
+      VIRTUAL_HOST: "recordatorio-api.duckdns.org"
+      VIRTUAL_PORT: "1337"
+      LETSENCRYPT_HOST: "recordatorio-api.duckdns.org"
+      LETSENCRYPT_EMAIL: "leandroamarillo95@gmail.com"
+    depends_on:
+      - recordatorios-mysql
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - confd:/etc/nginx/conf.d
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion:latest
+    restart: always
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - confd:/etc/nginx/conf.d
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      DEFAULT_EMAIL: "leandroamarillo95@gmail.com"
+
+volumes:
+  certs:
+  html:
+  vhostd:
+  confd:
