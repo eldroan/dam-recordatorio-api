@@ -95,14 +95,14 @@ app.delete("/recordatorio", async (req, res) => {
   try {
     const legajo = req.body.legajo;
     const id = req.body.id;
-    await recordatorios.destroy({
+    const rows = await recordatorios.destroy({
       where: {
         legajo,
         id,
       },
     });
     res.status(200).send({
-      message: "Ok!",
+      deletedt: rows,
     });
   } catch (err) {
     return res.status(500).send({
