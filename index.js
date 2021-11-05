@@ -95,7 +95,7 @@ app.delete("/recordatorio", (req, res) => {
   try {
     const legajo = req.body.legajo;
     const id = req.body.id;
-    return recordatorios
+    recordatorios
       .destroy({
         where: {
           legajo,
