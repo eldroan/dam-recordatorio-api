@@ -4,9 +4,9 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      MYSQL_DATABASE: "DB_NAME"
-      MYSQL_USER: "DB_USER"
-      MYSQL_PASSWORD: "DB_PASS"
+      MYSQL_DATABASE: "DEFAULT_DB_NAME"
+      MYSQL_USER: "DEFAULT_DB_USER"
+      MYSQL_PASSWORD: "DEFAULT_DB_PASS"
       MYSQL_RANDOM_ROOT_PASSWORD: true
     ports:
       - "6603:3306"
@@ -26,9 +26,9 @@ services:
     volumes:
       - /usr/src/app/node_modules
     environment:
-      DB_NAME: "DB_NAME"
-      DB_USER: "DB_USER"
-      DB_PASS: "DB_PASS"
+      DB_NAME: "DEFAULT_DB_NAME"
+      DB_USER: "DEFAULT_DB_USER"
+      DB_PASS: "DEFAULT_DB_PASS"
       DB_HOST: recordatorios-mysql
       DB_PORT: 3306
       VIRTUAL_HOST: "recordatorio-api.duckdns.org"

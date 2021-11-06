@@ -8,6 +8,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "docker-build": "npm i && docker build -t recordatorio-service:latest .",
+    "sequelize-migrations": "npx sequelize-cli db:migrate",
+    "replace": "chmod -R 777 replace.sh && ./replace.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
