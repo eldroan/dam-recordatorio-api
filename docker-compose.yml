@@ -7,7 +7,7 @@ services:
       MYSQL_DATABASE: "DEFAULT_DB_NAME"
       MYSQL_USER: "DEFAULT_DB_USER"
       MYSQL_PASSWORD: "DEFAULT_DB_PASS"
-      MYSQL_RANDOM_ROOT_PASSWORD: true
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
     ports:
       - "6603:3306"
     expose:
